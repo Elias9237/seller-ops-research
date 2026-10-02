@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Phase 3 Screener — Seller Ops Research</title>
+<style>
+  :root { --bg:#0f1419; --card:#1a2332; --text:#e7ecf3; --muted:#9aa8b8; --accent:#3d8bfd; --ok:#3ecf8e; --bad:#f07178; --warn:#e6c07b; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background:var(--bg); color:var(--text); line-height:1.45; }
+  main { max-width:640px; margin:0 auto; padding:24px 16px 64px; }
+  h1 { font-size:1.35rem; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:0.9rem; margin-bottom:20px; }
+  .card { background:var(--card); border-radius:12px; padding:16px 18px; margin-bottom:14px; }
+  label { display:block; font-weight:600; margin-bottom:8px; }
+  .hint { font-weight:400; color:var(--muted); font-size:0.85rem; }
+  input[type=text], select, textarea { width:100%; padding:10px 12px; border-radius:8px; border:1px solid #2a384a; background:#121a24; color:var(--text); font:inherit; }
+  textarea { min-height:64px; resize:vertical; }
+  .opts { display:flex; flex-direction:column; gap:8px; }
+  .opts label { font-weight:400; display:flex; gap:8px; align-items:flex-start; }
+  button { appearance:none; border:0; border-radius:10px; padding:12px 18px; font:inherit; font-weight:600; cursor:pointer; background:var(--accent); color:#fff; width:100%; }
+  button:hover { filter:brightness(1.08); }
+  #result { display:none; margin-top:16px; }
+  #result.show { display:block; }
+  .slot { font-size:1.6rem; font-weight:700; letter-spacing:0.02em; }
+  .pass { color:var(--ok); }
+  .fail { color:var(--bad); }
+  .park { color:var(--warn); }
+  .privacy { font-size:0.8rem; color:var(--muted); margin-top:18px; }
+  .badge { display:inline-block; padding:2px 8px; border-radius:999px; background:#243044; font-size:0.75rem; color:var(--muted); margin-bottom:12px; }
+</style>
+</head>
+<body>
+<main>
+  <span class="badge">Independent research · not a sales form · local JSON only</span>
+  <h1>Seller ops research — short screener</h1>
+  <p class="sub">~3 minutes. Maps to interview segment slots A–G. On submit, a JSON file downloads to your device (nothing is uploaded).</p>
+
+  <form id="screener" autocomplete="on">
+    <div class="card">
+      <label>Handle or first name <span class="hint">(no legal name required)</span></label>
+      <input type="text" name="handle" required placeholder="e.g. Alex / u/seller123" />
+    </div>
+    <div class="card">
+      <label>Contact channel <span class="hint">(Reddit DM / Discord / email research alias)</span></label>
+      <input type="text" name="contact" required placeholder="platform + handle or research-safe email" />
+    </div>
+
+    <div class="card">
+      <label>1. What do you sell and where? <span class="hint">(platform + country / store language)</span></label>
+      <textarea name="q1_sell_where" required placeholder="e.g. Shopify dropship, FR store, ship EU"></textarea>
+      <div style="margin-top:10px" class="opts">
+        <label><input type="checkbox" name="platform" value="shopify" /> Shopify</label>
+        <label><input type="checkbox" name="platform" value="etsy" /> Etsy</label>
+        <label><input type="checkbox" name="platform" value="amazon" /> Amazon</label>
+        <label><input type="checkbox" name="platform" value="woo" /> Woo / other</label>
+        <label><input type="checkbox" name="platform" value="multi" /> Multi-marketplace</label>
+        <label><input type="checkbox" name="platform" value="pod" /> POD (Printful / Printify / Gelato…)</label>
+        <label><input type="checkbox" name="platform" value="agency" /> I work for sellers (agency / freelance / VA)</label>
+      </div>
+      <label style="margin-top:12px">Store country / primary language</label>
+      <select name="country_lang" required>
+        <option value="">Select…</option>
+        <option value="FR">France / French</option>
+        <option value="EU_EN">Other EU — English store</option>
+        <option value="DE">Germany / German</option>
+        <option value="ES">Spain / Spanish</option>
+        <option value="IT">Italy / Italian</option>
+        <option value="NL">Netherlands / Dutch</option>
+        <option value="PL">Poland / Polish</option>
+        <option value="EU_OTHER">Other non-EN EU</option>
+        <option value="EN_US_UK">US / UK / global English</option>
+        <option value="OTHER">Other</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <label>2. How long have you been selling?</label>
+      <select name="q2_tenure" required>
+        <option value="">Select…</option>
+        <option value="lt6">&lt; 6 months</option>
+        <option value="6to12">6–12 months</option>
+        <option value="1to3">1–3 years</option>
+        <option value="3plus">3+ years</option>
+        <option value="never">Not selling yet / only learning</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <label>3. About how many products are live?</label>
+      <select name="q3_products" required>
+        <option value="">Select…</option>
+        <option value="1-10">1–10</option>
+        <option value="11-50">11–50</option>
+        <option value="51-200">51–200</option>
+        <option value="200+">200+</option>
+        <option value="n/a_agency">N/A — I support clients</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <label>4. Who works on the store?</label>
+      <select name="q4_team" required>
+        <option value="">Select…</option>
+        <option value="solo">Solo</option>
+        <option value="va">With VA(s)</option>
+        <option value="agency">Agency involved</option>
+        <option value="team">Employees / team</option>
+        <option value="i_am_provider">I am the VA / freelancer / agency</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <label>5. In the last month, which ate the most time or money? <span class="hint">(multi-select)</span></label>
+      <div class="opts">
+        <label><input type="checkbox" name="q5_pain" value="S02" /> Getting / managing suppliers &amp; stock sync</label>
+        <label><input type="checkbox" name="q5_pain" value="S03" /> Product photos, copy, or translation</label>
+        <label><input type="checkbox" name="q5_pain" value="S07" /> Reviews, email/SMS, upsells, or checkout conversion</label>
+        <label><input type="checkbox" name="q5_pain" value="S08" /> Shipping, tracking, or returns</label>
+        <label><input type="checkbox" name="q5_pain" value="S06" /> Ads / traffic</label>
+        <label><input type="checkbox" name="q5_pain" value="S10" /> Tax, fees, or compliance</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <label>6. OK with a 45-min call for anonymous research (small thank-you voucher €10–15 if offered)?</label>
+      <select name="q6_consent" required>
+        <option value="">Select…</option>
+        <option value="Y">Yes</option>
+        <option value="N">No</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <label>Optional: model / notes</label>
+      <textarea name="notes" placeholder="Dropship / POD / own stock / FBA / hybrid; anything else"></textarea>
+    </div>
+
+    <button type="submit">Score segment &amp; download JSON</button>
+  </form>
+
+  <div id="result" class="card">
+    <div id="verdict"></div>
+    <p id="slotLine" class="slot"></p>
+    <p id="detail" class="hint"></p>
+  </div>
+
+  <p class="privacy">
+    Privacy: purpose = market research on store ops, not a sales call. We use notes/quotes without publishing your store name or email without permission.
+    Do not enter payment-card data. Researcher identity must be an anonymous research alias — never Pejman Parsa / pouria paarsia / personal or brand support inboxes.
+  </p>
+</main>
+<script>
+(function () {
+  function checked(name) {
+    return Array.from(document.querySelectorAll('input[name="' + name + '"]:checked')).map(function (el) { return el.value; });
+  }
+
+  function mapSlot(data) {
+    var platforms = data.platforms;
+    var tenure = data.q2_tenure;
+    var country = data.country_lang;
+    var team = data.q4_team;
+    var pains = data.q5_pains;
+    var focus = pains.filter(function (p) { return ['S02','S03','S07','S08'].indexOf(p) >= 0; });
+
+    // Hard / soft fails
+    if (tenure === 'never') {
+      return { status: 'park', slot: null, reason: 'Never sold / learning only — park for later survey, not interview.' };
+    }
+    if (data.q6_consent !== 'Y') {
+      return { status: 'fail', slot: null, reason: 'No consent for 45-min research call.' };
+    }
+    var isG = platforms.indexOf('agency') >= 0 || team === 'i_am_provider';
+    if (!isG && focus.length === 0) {
+      return { status: 'fail', slot: null, reason: 'No S02/S03/S07/S08 involvement selected — fail unless agency/VA with client ops.' };
+    }
+    if (isG && focus.length === 0 && pains.length === 0) {
+      return { status: 'park', slot: 'G', reason: 'Provider with unclear ops touch — probe client S02/S03/S07/S08 before booking.' };
+    }
+
+    // Priority mapping per SCREENER.md
+    if (isG) {
+      return { status: 'pass', slot: 'G', reason: 'Works for sellers (agency / freelance / VA).' };
+    }
+    if (platforms.indexOf('etsy') >= 0 || platforms.indexOf('pod') >= 0) {
+      return { status: 'pass', slot: 'E', reason: 'Etsy and/or POD primary signals.' };
+    }
+    if (platforms.indexOf('amazon') >= 0 || platforms.indexOf('multi') >= 0) {
+      return { status: 'pass', slot: 'F', reason: 'Amazon or multi-marketplace.' };
+    }
+    var nonEnEu = ['DE','ES','IT','NL','PL','EU_OTHER'].indexOf(country) >= 0;
+    if (nonEnEu) {
+      return { status: 'pass', slot: 'C', reason: 'Non-English EU store outside France.' };
+    }
+    if (country === 'EN_US_UK' || (country === 'EU_EN' && tenure !== 'lt6')) {
+      // EN comparison; beginners FR/EU take A first
+      if (tenure === 'lt6' && (country === 'FR' || country === 'EU_EN')) {
+        return { status: 'pass', slot: 'A', reason: 'Beginner <6 mo FR/EU.' };
+      }
+      if (country === 'EN_US_UK') {
+        return { status: 'pass', slot: 'D', reason: 'English-language comparison group.' };
+      }
+    }
+    if (tenure === 'lt6' && (country === 'FR' || country === 'EU_EN' || country === 'EU_OTHER')) {
+      return { status: 'pass', slot: 'A', reason: 'Beginner dropshipper <6 months, France/EU.' };
+    }
+    if (tenure === '1to3' || tenure === '3plus' || (tenure === '6to12' && country !== 'EN_US_UK')) {
+      // experienced band — B unless pure EN comparison already caught
+      if (country === 'EN_US_UK') {
+        return { status: 'pass', slot: 'D', reason: 'EN store — comparison slot D.' };
+      }
+      return { status: 'pass', slot: 'B', reason: 'Experienced dropship / small brand (>~1y or established).' };
+    }
+    if (country === 'EN_US_UK') {
+      return { status: 'pass', slot: 'D', reason: 'English-language store.' };
+    }
+    if (country === 'FR' || country === 'EU_EN') {
+      return { status: 'pass', slot: tenure === 'lt6' ? 'A' : 'B', reason: 'FR/EU seller — tenure mapped to A/B.' };
+    }
+    return { status: 'pass', slot: 'B', reason: 'Default experienced / small-brand bucket — review manually.' };
+  }
+
+  document.getElementById('screener').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var fd = new FormData(ev.target);
+    var data = {
+      schema: 'phase3-screener-v1',
+      saved_at: new Date().toISOString(),
+      handle: fd.get('handle'),
+      contact: fd.get('contact'),
+      q1_sell_where: fd.get('q1_sell_where'),
+      platforms: checked('platform'),
+      country_lang: fd.get('country_lang'),
+      q2_tenure: fd.get('q2_tenure'),
+      q3_products: fd.get('q3_products'),
+      q4_team: fd.get('q4_team'),
+      q5_pains: checked('q5_pain'),
+      q6_consent: fd.get('q6_consent'),
+      notes: fd.get('notes') || ''
+    };
+    var mapped = mapSlot(data);
+    data.segment_slot = mapped.slot;
+    data.screener_status = mapped.status;
+    data.screener_reason = mapped.reason;
+
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    var safe = (data.handle || 'lead').toString().replace(/[^\w.-]+/g, '_').slice(0, 40);
+    a.href = URL.createObjectURL(blob);
+    a.download = 'screener_' + safe + '_' + (mapped.slot || mapped.status) + '.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500);
+
+    var result = document.getElementById('result');
+    var verdict = document.getElementById('verdict');
+    var slotLine = document.getElementById('slotLine');
+    var detail = document.getElementById('detail');
+    result.classList.add('show');
+    if (mapped.status === 'pass') {
+      verdict.innerHTML = '<span class="pass">PASS</span> — book into quota';
+      slotLine.textContent = 'Segment slot ' + mapped.slot;
+    } else if (mapped.status === 'park') {
+      verdict.innerHTML = '<span class="park">PARK</span> — survey panel / probe later';
+      slotLine.textContent = mapped.slot ? ('Possible slot ' + mapped.slot) : 'No interview slot';
+    } else {
+      verdict.innerHTML = '<span class="fail">FAIL / DECLINE</span>';
+      slotLine.textContent = 'No segment slot';
+    }
+    detail.textContent = mapped.reason + ' · JSON downloaded. Update TRACKER.csv status → screened (or declined).';
+  });
+})();
+</script>
+</body>
+</html>
